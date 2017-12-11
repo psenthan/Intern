@@ -108,8 +108,7 @@ function CountEmails (columnId, spreadSheetFileName, emailListSheetName, targetS
      
      var numberOfEmailsSent = 0;
      
-     var searchString = 'from:' + currentEmail + ' to:(' + publicEmailList + ') after:' + after + ' before:' + before;
-     var threads = GmailApp.search(searchString);
+    
      
      if ( threads.length > 0){
            
