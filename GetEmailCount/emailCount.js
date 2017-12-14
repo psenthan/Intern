@@ -25,7 +25,7 @@ function getMails(spreadSheetFileName){
   
 }
 function run(){
-  var outPut = getAllMailsFromTo("thilinama@wso2.com","vacation-group@wso2.com","2017/11/29" , '2017/11/9');
+  var outPut = getAllMailsFromTo("","2017/11/29" , '2017/11/9');
            Logger.log(outPut);
 
 }
