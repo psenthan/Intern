@@ -1,6 +1,6 @@
 function Count(){ 
   
-  CountEmails(91,'TeamEmails-Integration', 'emails', 'club','summary', 'club-group@wso2.com','2017/10/1' , '2017/11/20');
+  CountEmails("Have to specific parmeters here!!!!!! according to the function you see below");
   
 
   }
