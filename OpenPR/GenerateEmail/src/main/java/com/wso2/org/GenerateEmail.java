@@ -11,7 +11,7 @@ public class GenerateEmail
     public static void main( String[] args )
     {
         final String senderEmail="senthanprasanth007@gmail.com";
-        final String password="dic0112365831";
+        final String password="";
         Properties props =new Properties();
         props.put("mail.smtp.auth","true");
         props.put("mail.smtp.starttls.enable","true");
