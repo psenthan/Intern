@@ -88,7 +88,7 @@ public class EmailAttachmentSender {
         String host = "smtp.gmail.com";
         String port = "587";
         String mailFrom = "senthanprasanth007@gmail.com";
-        String password = "dic0112365831";
+        String password = "";
 
         ReadConfigureFile credentials = new ReadConfigureFile();
 
