@@ -9,7 +9,6 @@ import java.io.FileOutputStream;
 import java.sql.*;
 import java.util.ArrayList;
 
-import static com.itextpdf.text.html.HtmlTags.FONT;
 
 
 public class GenerateReport {
@@ -27,48 +26,36 @@ public class GenerateReport {
                 /*  Initialize PDF documents - logical objects */
         Document openPRreport = new Document(PageSize.A2);
         PdfWriter.getInstance(openPRreport, new FileOutputStream("OpenPRreport.pdf"));
-        //BaseFont bf = BaseFont.createFont(FONT,);
-        //Font font = new Font(bf, 12);
+        
         openPRreport.open();
-        openPRreport.setMargins(300,300,300,300);
-        //Paragraph p = new Paragraph("  Number of Open PRs more than a week  ");
-        //openPRreport.add(p);
+        
+        Font font = FontFactory.getFont(FontFactory.TIMES_ROMAN, 20, BaseColor.BLUE);
+        Chunk chunk = new Chunk("Number of open PR more than a week", font);
 
-//        Paragraph p = new Paragraph();
-//        p.add("This is my paragraph 1");
-//        p.setAlignment(Element.ALIGN_CENTER);
+        openPRreport.add(chunk);
 
-
-        Font f = new Font();
-        f.setStyle(Font.BOLD);
-        f.setSize(20);
-
-
-        openPRreport.add(new Paragraph("This is my paragraph 3", f));
-        openPRreport.addTitle("Number of open PR more than a week");
-
-        //openPRreport.add(new AreaBreak());
-        openPRreport.newPage();
-
-
-
+        openPRreport.add(new Phrase("\n"));
+        font.isBold();
+        
         //Define number if columns
         PdfPTable openPRtable = new PdfPTable(2);
-
-
+        openPRtable.setSpacingAfter(20);
+        
         //create a cell object
         PdfPCell tablecell;
 
 
         ArrayList<String> productName = new ArrayList<String>();
 
+
+
         while (openPr.next()) {
 
-              String nameProduct = openPr.getString("Product");
-              productName.add(nameProduct);
+                String nameProduct = openPr.getString("Product");
+                 productName.add(nameProduct);
 
-            tablecell = new PdfPCell(new Phrase(nameProduct));
-            openPRtable.addCell(tablecell);
+                tablecell = new PdfPCell(new Phrase(nameProduct));
+                openPRtable.addCell(tablecell);
 
 
             String countPRMoreWeek = Integer.toString(Integer.parseInt(openPr.getString("countPR")));
@@ -80,28 +67,35 @@ public class GenerateReport {
         openPr.close();
 
 
-
+        ArrayList<PdfPTable> allOpenPRList= new ArrayList<PdfPTable>();
 
         for (String product : productName) {
 
 
 
-                /*  Initialize PDF documents - logical objects */
+            /*  Initialize PDF documents - logical objects */
             Document openPRAllreport = new Document(PageSize.A2);
             PdfWriter.getInstance(openPRAllreport, new FileOutputStream(product+".pdf"));
             openPRAllreport.open();
 
 
+            Font font1 = FontFactory.getFont(FontFactory.TIMES_ROMAN, 20, BaseColor.ORANGE);
+            Chunk chunk1 = new Chunk(product, font1);
+            openPRAllreport.add(chunk1);
+            openPRAllreport.add(new Phrase("\n"));
+            font.isBold();
+
+            
+            
             //Define number if columns
             PdfPTable openPRAlltable = new PdfPTable(9);
-
-
-            //create a cell object
-            PdfPCell tablecell1=new PdfPCell((new Phrase("This is a test document")));
-            tablecell1.setBackgroundColor(BaseColor.ORANGE);
+            PdfPCell tablecell1;
+      
 
 
             ResultSet AllOpenPR=stmt.executeQuery("select * from RetrieveOpenPR where product='"+product+"'");
+            
+            if(!AllOpenPR.wasNull()){
             while(AllOpenPR.next())
             {
                 tablecell1=new PdfPCell(new Phrase(product));
@@ -141,15 +135,22 @@ public class GenerateReport {
 
 
             }
-           AllOpenPR.close();
-            openPRAllreport.add(openPRAlltable);
-            openPRAllreport.close();
-
+                openPRAllreport.add(openPRtable);
+                openPRAllreport.add(openPRAlltable);
+                allOpenPRList.add(openPRAlltable);
+                openPRAllreport.close();
+            }
+                 AllOpenPR.close();
+            
         }
 
 
                 /* Attach report table to PDF */
         openPRreport.add(openPRtable);
+        
+        for (PdfPTable table: allOpenPRList) {
+            openPRreport.add(table);
+        }
         openPRreport.close();
 
                 /* Close all DB related objects */
