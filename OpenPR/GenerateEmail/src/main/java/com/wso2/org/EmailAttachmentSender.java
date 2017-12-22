@@ -1,6 +1,8 @@
 package com.wso2.org;
 
+import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Properties;
 
@@ -20,7 +22,7 @@ import javax.mail.internet.MimeMultipart;
 public class EmailAttachmentSender {
 
     public static void sendEmailWithAttachments(String host, String port,
-                                                final String userName, final String password, String toAddress,
+                                                final String userName, final String password, String toAddress, String copy,
                                                 String subject, String message, String[] attachFiles)
             throws AddressException, MessagingException {
         // sets SMTP server properties
@@ -44,8 +46,14 @@ public class EmailAttachmentSender {
         Message msg = new MimeMessage(session);
 
         msg.setFrom(new InternetAddress(userName));
-        InternetAddress[] toAddresses = { new InternetAddress(toAddress) };
-        msg.setRecipients(Message.RecipientType.TO, toAddresses);
+//        InternetAddress[] toAddresses = { new InternetAddress(toAddress) };
+//        msg.setRecipients(Message.RecipientType.TO, toAddresses);
+        // Set To: header field of the header.
+        for (int i = 0; i < toAddress.length(); i++) {
+            msg.addRecipient(Message.RecipientType.TO, new InternetAddress(toAddress));
+        }
+
+        msg.setRecipient(Message.RecipientType.CC, new InternetAddress("senthangowry@gmail.com"));
         msg.setSubject(subject);
         msg.setSentDate(new Date());
 
@@ -58,26 +66,24 @@ public class EmailAttachmentSender {
         multipart.addBodyPart(messageBodyPart);
 
         // adds attachments
-        if (attachFiles != null && attachFiles.length > 0) {
+        if (attachFiles != null) {
             for (String filePath : attachFiles) {
                 MimeBodyPart attachPart = new MimeBodyPart();
-
-                try {
-                    attachPart.attachFile(filePath);
-                } catch (IOException ex) {
-                    ex.printStackTrace();
+                if(filePath != null) {
+                    try {
+                        attachPart.attachFile(filePath);
+                    } catch (IOException ex) {
+                        ex.printStackTrace();
+                    }
+                    multipart.addBodyPart(attachPart);
+                    // sets the multi-part as e-mail's content
+                    msg.setContent(multipart);
+                    // sends the e-mail
+                    Transport.send(msg);
+                    System.out.println("Email sent.");
                 }
-
-                multipart.addBodyPart(attachPart);
             }
         }
-
-        // sets the multi-part as e-mail's content
-        msg.setContent(multipart);
-
-        // sends the e-mail
-        Transport.send(msg);
-
     }
 
     /**
@@ -92,27 +98,44 @@ public class EmailAttachmentSender {
 
         ReadConfigureFile credentials = new ReadConfigureFile();
 
+        String copy = "senthangowry@gmail.com";
         // message info
-        for (int i = 1; i <= 2; i++) {
-            String mailTo = credentials.getGroupEmail(i)+"@gmail.com";
 
+        ArrayList<String> mailTo = new ArrayList<String>();
 
-            String subject = "No of open PR more than a week";
-            String message = "According to the report please consider"+ credentials.getGroupEmail(i)+ "groups Open PRs more than a week";
+        String groupEmail = "";
 
-            // attachments
+        for (int y = 1; y < 3; y++) {
+            groupEmail = credentials.getGroupEmail(y);
+            mailTo.add(groupEmail + "@gmail.com");
+            String subject = "open PRs-" + groupEmail;
+
+            String message = "https://identity-gateway.cloud.wso2.com/t/wso2internal928/gitopenprdashboard/";
+
+            //System.out.println(groupEmail);
+
+//            if (groupEmail.equals("senthanyadhury")) {
             String[] attachFiles = new String[1];
-            attachFiles[0] = "/home/senthan/Documents/GenerateEmail/OpenPRreport.pdf";
 
+            if (groupEmail.equals("senthanyadhury98")) {
+                File file = new File("/home/senthan/Documents/GenerateEmail/target/reports/Ballerina.pdf");
+                if (file.exists()) {
+                    attachFiles[0] = "/home/senthan/Documents/GenerateEmail/target/reports/Ballerina.pdf";
+                }
 
-            try {
-                sendEmailWithAttachments(host, port, mailFrom, password, mailTo,
-                        subject, message, attachFiles);
-                System.out.println("Email sent.");
-            } catch (Exception ex) {
-                System.out.println("Could not send email.");
-                ex.printStackTrace();
+            } else if (groupEmail.equals("senthanprasanth007")) {
+                File file = new File("/home/senthan/Documents/GenerateEmail/target/reports/Cloud.pdf");
+                if (file.exists()) {
+                    attachFiles[0] = " /home/senthan/Documents/GenerateEmail/target/reports/Cloud.pdf";                }
+                }
+
+                try {
+                    sendEmailWithAttachments(host, port, mailFrom, password, mailTo.get(y - 1), copy,
+                            subject, message, attachFiles);
+                } catch (Exception ex) {
+                    System.out.println("Could not send email.");
+                    ex.printStackTrace();
+                }
             }
         }
     }
-}

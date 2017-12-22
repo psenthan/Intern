@@ -21,23 +21,20 @@ package com.wso2.org;
 import java.io.*;
 import java.util.Properties;
 
-public class ReadConfigureFile{
-    protected Properties prop= null;
-    protected InputStream input= getClass().getResourceAsStream("/config.properties");
+public class ReadConfigureFile {
+    protected Properties prop = null;
+    protected InputStream input = getClass().getResourceAsStream("/config.properties");
     BufferedReader reader = new BufferedReader(new InputStreamReader(input));
 
-    public ReadConfigureFile() throws IOException{
+    public ReadConfigureFile() throws IOException {
 
-        prop= new Properties();
+        prop = new Properties();
         prop.load(input);
     }
 
 
-    public String getGroupEmail(int i){
-        return prop.getProperty("group"+i);
+    public String getGroupEmail(int i) {
+        return prop.getProperty("group" + i);
     }
-
-
-
 
 }
