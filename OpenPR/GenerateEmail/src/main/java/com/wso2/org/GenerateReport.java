@@ -38,18 +38,15 @@ public class GenerateReport {
 
 
         font.isBold();
-
-=======
         
         openPRreport.open();
         
         Font font = FontFactory.getFont(FontFactory.TIMES_ROMAN, 20, BaseColor.BLUE);
         Chunk chunk = new Chunk("Number of open PR more than a week", font);
->>>>>>> 0d1e21978bfe863563d16befdd10d77db815bb92
+
 
         openPRreport.add(chunk);
 
-<<<<<<< HEAD
         PdfPTable openPRtable = new PdfPTable(2);
         openPRtable.setWidthPercentage(80);
         openPRtable.addCell("Product");
@@ -58,7 +55,7 @@ public class GenerateReport {
         openPRtable.setHeaderRows(Element.ALIGN_CENTER);
         openPRtable.setHorizontalAlignment(Element.ALIGN_CENTER);
         openPRtable.setSpacingAfter(20);
-=======
+
         openPRreport.add(new Phrase("\n"));
         font.isBold();
         
@@ -67,7 +64,7 @@ public class GenerateReport {
         openPRtable.setSpacingAfter(20);
         
         //create a cell object
->>>>>>> 0d1e21978bfe863563d16befdd10d77db815bb92
+
         PdfPCell tablecell;
 
 
@@ -101,11 +98,9 @@ public class GenerateReport {
 
             // PdfReader reader=new PdfReader(OpenPRpdfReport);
 
-<<<<<<< HEAD
-=======
 
             /*  Initialize PDF documents - logical objects */
->>>>>>> 0d1e21978bfe863563d16befdd10d77db815bb92
+
             Document openPRAllreport = new Document(PageSize.A2);
             PdfWriter.getInstance(openPRAllreport, new FileOutputStream("target/reports/"+ product + ".pdf"));
             openPRAllreport.open();
@@ -120,7 +115,7 @@ public class GenerateReport {
 
 
 
-<<<<<<< HEAD
+
             PdfPTable openPRAlltable = new PdfPTable(9);
             openPRAlltable.setWidthPercentage(100);
             openPRAlltable.addCell("Product");
