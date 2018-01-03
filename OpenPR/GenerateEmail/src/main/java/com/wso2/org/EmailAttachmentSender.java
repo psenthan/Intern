@@ -22,7 +22,7 @@ import javax.mail.internet.MimeMultipart;
 public class EmailAttachmentSender {
 
     public static void sendEmailWithAttachments(String host, String port,
-                                                final String userName, final String password, String toAddress, String copy,
+                                                final String userName, final String password, String toAddress,
                                                 String subject, String message, String[] attachFiles)
             throws AddressException, MessagingException {
         // sets SMTP server properties
@@ -46,14 +46,12 @@ public class EmailAttachmentSender {
         Message msg = new MimeMessage(session);
 
         msg.setFrom(new InternetAddress(userName));
-//        InternetAddress[] toAddresses = { new InternetAddress(toAddress) };
-//        msg.setRecipients(Message.RecipientType.TO, toAddresses);
-        // Set To: header field of the header.
+        
         for (int i = 0; i < toAddress.length(); i++) {
             msg.addRecipient(Message.RecipientType.TO, new InternetAddress(toAddress));
         }
 
-        msg.setRecipient(Message.RecipientType.CC, new InternetAddress("senthangowry@gmail.com"));
+        
         msg.setSubject(subject);
         msg.setSentDate(new Date());
 
@@ -98,7 +96,7 @@ public class EmailAttachmentSender {
 
         ReadConfigureFile credentials = new ReadConfigureFile();
 
-        String copy = "senthangowry@gmail.com";
+        
         // message info
 
         ArrayList<String> mailTo = new ArrayList<String>();
@@ -118,19 +116,19 @@ public class EmailAttachmentSender {
             String[] attachFiles = new String[1];
 
             if (groupEmail.equals("senthanyadhury98")) {
-                File file = new File("/home/senthan/Documents/GenerateEmail/target/reports/Ballerina.pdf");
+                File file = new File("reports/Ballerina.pdf");
                 if (file.exists()) {
-                    attachFiles[0] = "/home/senthan/Documents/GenerateEmail/target/reports/Ballerina.pdf";
+                    attachFiles[0] = "reports/Ballerina.pdf";
                 }
 
             } else if (groupEmail.equals("senthanprasanth007")) {
-                File file = new File("/home/senthan/Documents/GenerateEmail/target/reports/Cloud.pdf");
+                File file = new File("reports/Cloud.pdf");
                 if (file.exists()) {
-                    attachFiles[0] = " /home/senthan/Documents/GenerateEmail/target/reports/Cloud.pdf";                }
+                    attachFiles[0] = "reports/Cloud.pdf";                }
                 }
 
                 try {
-                    sendEmailWithAttachments(host, port, mailFrom, password, mailTo.get(y - 1), copy,
+                    sendEmailWithAttachments(host, port, mailFrom, password, mailTo.get(y - 1),
                             subject, message, attachFiles);
                 } catch (Exception ex) {
                     System.out.println("Could not send email.");
