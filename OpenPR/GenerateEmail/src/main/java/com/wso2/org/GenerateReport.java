@@ -11,10 +11,6 @@ import java.io.FileOutputStream;
 import java.sql.*;
 import java.util.ArrayList;
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 0d1e21978bfe863563d16befdd10d77db815bb92
 
 public class GenerateReport {
     public static void main(String[] args) throws Exception{
@@ -29,7 +25,6 @@ public class GenerateReport {
 
         Document openPRreport = new Document(PageSize.A2);
         PdfWriter.getInstance(openPRreport, new FileOutputStream("OpenPRreport.pdf"));
-<<<<<<< HEAD
 
         openPRreport.open();
 
@@ -148,7 +143,8 @@ public class GenerateReport {
                 while (AllOpenPR.next()) {
                     tablecell1 = new PdfPCell(new Phrase(product));
                     openPRAlltable.addCell(tablecell1);
-=======
+                    
+                    
             Font font1 = FontFactory.getFont(FontFactory.TIMES_ROMAN, 20, BaseColor.ORANGE);
             Chunk chunk1 = new Chunk(product, font1);
             openPRAllreport.add(chunk1);
@@ -170,7 +166,7 @@ public class GenerateReport {
             {
                 tablecell1=new PdfPCell(new Phrase(product));
                 openPRAlltable.addCell(tablecell1);
->>>>>>> 0d1e21978bfe863563d16befdd10d77db815bb92
+
 
                     String repoUrl = AllOpenPR.getString("Repourl");
                     tablecell1 = new PdfPCell(new Phrase(repoUrl));
@@ -208,11 +204,11 @@ public class GenerateReport {
                 openPRAllreport.add(openPRtable);
                 openPRAllreport.add(openPRAlltable);
 
-<<<<<<< HEAD
+
                 allOpenPRList.add(openPRAlltable);
 
                 openPRAllreport.close();
-=======
+
             }
                 openPRAllreport.add(openPRtable);
                 openPRAllreport.add(openPRAlltable);
@@ -221,7 +217,6 @@ public class GenerateReport {
             }
                  AllOpenPR.close();
             
->>>>>>> 0d1e21978bfe863563d16befdd10d77db815bb92
         }
 
             AllOpenPR.close();
@@ -229,7 +224,7 @@ public class GenerateReport {
         }
 
         openPRreport.add(openPRtable);
-<<<<<<< HEAD
+
         openPRreport.add(new Phrase("\n"));
         openPRreport.add(new Phrase("\n"));
         openPRreport.add(new Phrase("\n"));
@@ -237,11 +232,10 @@ public class GenerateReport {
         for (PdfPTable table: allOpenPRList) {
             openPRreport.add(table);
             openPRreport.add(new Phrase("\n"));
-=======
         
         for (PdfPTable table: allOpenPRList) {
             openPRreport.add(table);
->>>>>>> 0d1e21978bfe863563d16befdd10d77db815bb92
+
         }
         openPRreport.close();
 
