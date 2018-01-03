@@ -25,7 +25,6 @@ public class GenerateReport {
 
         Document openPRreport = new Document(PageSize.A2);
         PdfWriter.getInstance(openPRreport, new FileOutputStream("OpenPRreport.pdf"));
-
         openPRreport.open();
 
         Font font = FontFactory.getFont(FontFactory.TIMES_ROMAN, 20, BaseColor.BLUE);
@@ -52,8 +51,6 @@ public class GenerateReport {
         openPRtable.addCell("Product");
         openPRtable.addCell("Open PRs");
         openPRtable.setHeaderRows(1);
-        openPRtable.setHeaderRows(Element.ALIGN_CENTER);
-        openPRtable.setHorizontalAlignment(Element.ALIGN_CENTER);
         openPRtable.setSpacingAfter(20);
 
         openPRreport.add(new Phrase("\n"));
@@ -62,10 +59,16 @@ public class GenerateReport {
         //Define number if columns
         PdfPTable openPRtable = new PdfPTable(2);
         openPRtable.setSpacingAfter(20);
-        
-        //create a cell object
-
         PdfPCell tablecell;
+        
+                    boolean x = true;
+            for(PdfPRow r: openPRtable.getRows()) {
+                for(PdfPCell c: r.getCells()) {
+                    c.setBackgroundColor(x ? BaseColor.CYAN : BaseColor.WHITE);
+                }
+                x = !x;
+            }
+
 
 
         ArrayList<String> productName = new ArrayList<String>();
@@ -88,8 +91,12 @@ public class GenerateReport {
 
         }
         openPr.close();
-
-        File directory = new File("/home/senthan/Documents/GenerateEmail/target/reports");
+        
+                    File directory = new File("reports");
+            if (!directory.exists()) {
+                directory.mkdir();
+            }
+        
         FileUtils.cleanDirectory(directory);
 
         ArrayList<PdfPTable> allOpenPRList= new ArrayList<PdfPTable>();
@@ -102,7 +109,7 @@ public class GenerateReport {
             /*  Initialize PDF documents - logical objects */
 
             Document openPRAllreport = new Document(PageSize.A2);
-            PdfWriter.getInstance(openPRAllreport, new FileOutputStream("target/reports/"+ product + ".pdf"));
+            PdfWriter.getInstance(openPRAllreport, new FileOutputStream("reports/"+ product + ".pdf"));
             openPRAllreport.open();
 
             Font font1 = FontFactory.getFont(FontFactory.TIMES_ROMAN, 20, BaseColor.BLUE);
