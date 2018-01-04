@@ -11,10 +11,6 @@ import java.io.FileOutputStream;
 import java.sql.*;
 import java.util.ArrayList;
 
-<<<<<<< HEAD
-=======
-
->>>>>>> 0d1e21978bfe863563d16befdd10d77db815bb92
 
 public class GenerateReport {
     public static void main(String[] args) throws Exception{
@@ -29,8 +25,6 @@ public class GenerateReport {
 
         Document openPRreport = new Document(PageSize.A2);
         PdfWriter.getInstance(openPRreport, new FileOutputStream("OpenPRreport.pdf"));
-<<<<<<< HEAD
-
         openPRreport.open();
 
         Font font = FontFactory.getFont(FontFactory.TIMES_ROMAN, 20, BaseColor.BLUE);
@@ -43,37 +37,38 @@ public class GenerateReport {
 
 
         font.isBold();
-
-=======
         
         openPRreport.open();
         
         Font font = FontFactory.getFont(FontFactory.TIMES_ROMAN, 20, BaseColor.BLUE);
         Chunk chunk = new Chunk("Number of open PR more than a week", font);
->>>>>>> 0d1e21978bfe863563d16befdd10d77db815bb92
+
 
         openPRreport.add(chunk);
 
-<<<<<<< HEAD
         PdfPTable openPRtable = new PdfPTable(2);
         openPRtable.setWidthPercentage(80);
         openPRtable.addCell("Product");
         openPRtable.addCell("Open PRs");
         openPRtable.setHeaderRows(1);
-        openPRtable.setHeaderRows(Element.ALIGN_CENTER);
-        openPRtable.setHorizontalAlignment(Element.ALIGN_CENTER);
         openPRtable.setSpacingAfter(20);
-=======
+
         openPRreport.add(new Phrase("\n"));
         font.isBold();
         
         //Define number if columns
         PdfPTable openPRtable = new PdfPTable(2);
         openPRtable.setSpacingAfter(20);
-        
-        //create a cell object
->>>>>>> 0d1e21978bfe863563d16befdd10d77db815bb92
         PdfPCell tablecell;
+        
+                    boolean x = true;
+            for(PdfPRow r: openPRtable.getRows()) {
+                for(PdfPCell c: r.getCells()) {
+                    c.setBackgroundColor(x ? BaseColor.CYAN : BaseColor.WHITE);
+                }
+                x = !x;
+            }
+
 
 
         ArrayList<String> productName = new ArrayList<String>();
@@ -96,8 +91,12 @@ public class GenerateReport {
 
         }
         openPr.close();
-
-        File directory = new File("/home/senthan/Documents/GenerateEmail/target/reports");
+        
+                    File directory = new File("reports");
+            if (!directory.exists()) {
+                directory.mkdir();
+            }
+        
         FileUtils.cleanDirectory(directory);
 
         ArrayList<PdfPTable> allOpenPRList= new ArrayList<PdfPTable>();
@@ -106,13 +105,11 @@ public class GenerateReport {
 
             // PdfReader reader=new PdfReader(OpenPRpdfReport);
 
-<<<<<<< HEAD
-=======
 
             /*  Initialize PDF documents - logical objects */
->>>>>>> 0d1e21978bfe863563d16befdd10d77db815bb92
+
             Document openPRAllreport = new Document(PageSize.A2);
-            PdfWriter.getInstance(openPRAllreport, new FileOutputStream("target/reports/"+ product + ".pdf"));
+            PdfWriter.getInstance(openPRAllreport, new FileOutputStream("reports/"+ product + ".pdf"));
             openPRAllreport.open();
 
             Font font1 = FontFactory.getFont(FontFactory.TIMES_ROMAN, 20, BaseColor.BLUE);
@@ -125,7 +122,7 @@ public class GenerateReport {
 
 
 
-<<<<<<< HEAD
+
             PdfPTable openPRAlltable = new PdfPTable(9);
             openPRAlltable.setWidthPercentage(100);
             openPRAlltable.addCell("Product");
@@ -148,7 +145,8 @@ public class GenerateReport {
                 while (AllOpenPR.next()) {
                     tablecell1 = new PdfPCell(new Phrase(product));
                     openPRAlltable.addCell(tablecell1);
-=======
+                    
+                    
             Font font1 = FontFactory.getFont(FontFactory.TIMES_ROMAN, 20, BaseColor.ORANGE);
             Chunk chunk1 = new Chunk(product, font1);
             openPRAllreport.add(chunk1);
@@ -170,7 +168,7 @@ public class GenerateReport {
             {
                 tablecell1=new PdfPCell(new Phrase(product));
                 openPRAlltable.addCell(tablecell1);
->>>>>>> 0d1e21978bfe863563d16befdd10d77db815bb92
+
 
                     String repoUrl = AllOpenPR.getString("Repourl");
                     tablecell1 = new PdfPCell(new Phrase(repoUrl));
@@ -208,11 +206,11 @@ public class GenerateReport {
                 openPRAllreport.add(openPRtable);
                 openPRAllreport.add(openPRAlltable);
 
-<<<<<<< HEAD
+
                 allOpenPRList.add(openPRAlltable);
 
                 openPRAllreport.close();
-=======
+
             }
                 openPRAllreport.add(openPRtable);
                 openPRAllreport.add(openPRAlltable);
@@ -221,7 +219,6 @@ public class GenerateReport {
             }
                  AllOpenPR.close();
             
->>>>>>> 0d1e21978bfe863563d16befdd10d77db815bb92
         }
 
             AllOpenPR.close();
@@ -229,7 +226,7 @@ public class GenerateReport {
         }
 
         openPRreport.add(openPRtable);
-<<<<<<< HEAD
+
         openPRreport.add(new Phrase("\n"));
         openPRreport.add(new Phrase("\n"));
         openPRreport.add(new Phrase("\n"));
@@ -237,11 +234,10 @@ public class GenerateReport {
         for (PdfPTable table: allOpenPRList) {
             openPRreport.add(table);
             openPRreport.add(new Phrase("\n"));
-=======
         
         for (PdfPTable table: allOpenPRList) {
             openPRreport.add(table);
->>>>>>> 0d1e21978bfe863563d16befdd10d77db815bb92
+
         }
         openPRreport.close();
 
